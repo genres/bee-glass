@@ -1,0 +1,103 @@
+/* bee glass — see-through, blurred Firefox for Linux compositors (tested: Hyprland 0.56, Firefox 158).
+ * Needs the prefs in ../user.js and a compositor that blurs behind translucent windows.
+ * Tabs + toolbar + page glass share one tint (72% black, like a kitty terminal at
+ * background_opacity 0.72), so the toolbar runs straight into the page with no seam.
+ * Pop-ups (downloads, menus) stay ~96% solid with bright text so they're always readable.
+ * https://github.com/genres/bee-glass — MIT */
+
+:root {
+    --bee-glass: rgb(0 0 0 / 0.72);
+    --bee-text: #f1ece4;
+    --bee-text-dim: #cfc6b8;
+    --bee-edge: rgb(244 239 231 / 0.14);
+    --bee-accent: #b89e78;
+    color-scheme: dark !important;
+    background: transparent !important;
+    appearance: none !important;
+
+    /* Themes paint the window and the area behind web pages; clear both. */
+    --lwt-additional-images: none !important;
+    --lwt-header-image: none !important;
+    --toolbox-background-image: none !important;
+    --tabpanel-background-color: transparent !important;
+    --newtab-background-color: transparent !important;
+
+    --toolbar-color: var(--bee-text) !important;
+    --toolbar-field-color: var(--bee-text) !important;
+    --toolbar-field-focus-color: #ffffff !important;
+    --tab-selected-textcolor: #ffffff !important;
+    --toolbarbutton-icon-fill: var(--bee-text) !important;
+    --toolbarbutton-hover-background: rgb(244 239 231 / 0.09) !important;
+    --toolbarbutton-active-background: rgb(244 239 231 / 0.15) !important;
+    --toolbarbutton-border-radius: 9px !important;
+    --tab-border-radius: 10px !important;
+
+    /* Pop-ups (Firefox 158 uses --panel-*): nearly solid, bright text, visible edge. */
+    --panel-background-color: rgb(16 14 11 / 0.96) !important;
+    --panel-background-color-dimmed: rgb(36 32 26 / 0.96) !important;
+    --panel-text-color: #f4efe7 !important;
+    --panel-description-color: var(--bee-text-dim) !important;
+    --text-color-deemphasized: var(--bee-text-dim) !important;
+    --panel-border-color: rgb(244 239 231 / 0.28) !important;
+    --panel-separator-color: rgb(244 239 231 / 0.16) !important;
+}
+
+/* Everything between the window and the page is transparent... */
+body, #main-window, #browser, #appcontent, #tabbrowser-tabbox, #tabbrowser-tabpanels,
+.browserSidebarContainer, .browserContainer, .browserStack, browser[type="content"],
+#TabsToolbar, #nav-bar, #PersonalToolbar, #titlebar, #vertical-tabs, #tabbrowser-tabs {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    outline: none !important;
+}
+#tabbrowser-tabbox, #tabbrowser-tabpanels { margin: 0 !important; padding: 0 !important; }
+
+/* ...and the tab strip + toolbar carry the same glass tint as the pages. */
+#navigator-toolbox, #sidebar-main, sidebar-main, #sidebar-box, #sidebar-container {
+    background: var(--bee-glass) !important;
+    color: var(--bee-text) !important;
+    border: 0 !important;
+    box-shadow: none !important;
+}
+#navigator-toolbox::after { display: none !important; }
+#nav-bar { padding-block: 3px !important; }
+
+/* Address bar: a slightly lighter pane. */
+#urlbar-background, #urlbar .urlbar-background, #searchbar {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.11), rgb(255 255 255 / 0.045)), rgb(35 36 43 / 0.56) !important;
+    border: 1px solid var(--bee-edge) !important;
+    border-radius: 12px !important;
+}
+#urlbar[focused] #urlbar-background, #urlbar[focused] .urlbar-background { border-color: var(--bee-accent) !important; }
+#urlbar[open] #urlbar-background, #urlbar[open] .urlbar-background {
+    background: rgb(22 19 15 / 0.97) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 12px 38px rgb(0 0 0 / 0.30) !important;
+}
+#urlbar-input, .urlbar-input, #searchbar input { color: var(--bee-text) !important; caret-color: var(--bee-text) !important; }
+
+/* Tabs. */
+.tab-background { border-radius: 10px !important; background-image: none !important; }
+.tab-background[selected] {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.15), rgb(255 255 255 / 0.095)) !important;
+    border: 1px solid rgb(244 239 231 / 0.20) !important;
+    outline: none !important;
+}
+.tabbrowser-tab, .tab-label { color: var(--bee-text) !important; opacity: 1 !important; }
+.tabbrowser-tab[selected] .tab-label { color: #ffffff !important; font-weight: 600 !important; }
+.tab-close-button { color: var(--bee-text) !important; fill: currentColor !important; }
+
+/* Pop-up boxes themselves. */
+panel::part(content), menupopup::part(content) {
+    background-color: rgb(16 14 11 / 0.96) !important;
+    color: #f4efe7 !important;
+    border: 1px solid rgb(244 239 231 / 0.28) !important;
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.45) !important;
+}
+#downloadsPanel .downloadTarget { color: #f4efe7 !important; opacity: 1 !important; }
+#downloadsPanel .downloadDetails { color: var(--bee-text-dim) !important; opacity: 1 !important; }
+
+/* Selected text stays readable everywhere. */
+::selection { background-color: #a8c8f0 !important; color: #101216 !important; }

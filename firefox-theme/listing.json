@@ -1,0 +1,5 @@
+{
+  "summary": {"en-US": "Warm dark theme from the bee glass desktop: one flush surface from tabs to toolbar, soft gold accent, high-contrast menus."},
+  "description": {"en-US": "A warm, dark Firefox theme taken from the bee glass Linux desktop.\n\n• Tabs and toolbar are one flush surface with no dividing lines.\n• Soft gold accent on the active tab and focused address bar.\n• Menus and pop-ups (downloads, extensions) are solid and high-contrast, so they stay readable.\n\nWant the real see-through glass? Firefox themes can only use colours, so the full effect (transparent, blurred Firefox on Linux with Hyprland or KDE) lives in the bee glass kit on GitHub: https://github.com/genres/bee-glass"},
+  "categories": ["solid"]
+}
