@@ -1,3 +1,4 @@
 releases/
 *.zip
 __pycache__/
+CLAUDE.md
