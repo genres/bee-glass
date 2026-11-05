@@ -5,7 +5,7 @@ Usage:  tools/amo-sign.py [--channel unlisted|listed] [--manifest M --zip Z --li
         (defaults: this repo's bee-dl extension)
 Keys:   ~/.config/bee-dl/amo.json  {"issuer": "user:…", "secret": "…"}  (chmod 600; never commit or log)
 Output: dist/bee-dl-<version>-signed.xpi
-Standard library only. Listed channel = public store submission: only run it when Bee says "publish".
+Standard library only. --channel listed = public store submission (goes to Mozilla review).
 """
 import base64, hashlib, hmac, json, os, secrets, sys, time, urllib.error, urllib.request, uuid
 
